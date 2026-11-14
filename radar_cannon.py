@@ -24,7 +24,10 @@ async def setup():
     light.color(1, color.RED)
     light_matrix.clear()
     motor.run_to_absolute_position(CANNON_MOTOR, CANNON_READY, CANNON_SPEED)
-    await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_START, RADAR_SPEED)
+    if motor.absolute_position(RADAR_MOTOR) < 0:
+        await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_START, RADAR_SPEED, direction = motor.LONGEST_PATH)
+    else:
+        await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_START, RADAR_SPEED)
 
 
 async def radar_sweep():
