@@ -23,8 +23,6 @@ async def setup():
     light.color(1, color.RED)
     light_matrix.clear()
     motor.run_to_absolute_position(CANNON_MOTOR, CANNON_READY, CANNON_SPEED)
-    # Always approach the start position clockwise (through 0) so the cable doesn't wind up
-    await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_RIGHT, RADAR_SPEED, direction=motor.CLOCKWISE)
 
 
 async def radar_sweep():
