@@ -7,9 +7,8 @@ CANNON_MOTOR = port.F
 DISTANCE_SENSOR = port.E
 
 # Radar settings
-RADAR_START = 180
-RADAR_LEFT = 175
-RADAR_RIGHT = 185
+RADAR_LEFT = -175
+RADAR_RIGHT = 175
 RADAR_SPEED = 200
 
 # Cannon settings
@@ -25,15 +24,14 @@ async def setup():
     light_matrix.clear()
     motor.run_to_absolute_position(CANNON_MOTOR, CANNON_READY, CANNON_SPEED)
     # Always approach the start position clockwise (through 0) so the cable doesn't wind up
-    await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_START, RADAR_SPEED, direction=motor.CLOCKWISE)
+    await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_RIGHT, RADAR_SPEED, direction=motor.CLOCKWISE)
 
 
 async def radar_sweep():
     await setup()
     while True:
-        # LONGEST_PATH makes each move almost a full turn, so the radar sweeps ~350°
-        await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_RIGHT, RADAR_SPEED, direction=motor.LONGEST_PATH)
-        await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_LEFT, RADAR_SPEED, direction=motor.LONGEST_PATH)
+        await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_LEFT, RADAR_SPEED, direction=motor.COUNTERCLOCKWISE)
+        await motor.run_to_absolute_position(RADAR_MOTOR, RADAR_RIGHT, RADAR_SPEED, direction=motor.CLOCKWISE)
 
 
 async def fire_gun():
