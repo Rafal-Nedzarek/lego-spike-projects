@@ -13,8 +13,8 @@ RADAR_RIGHT = 185
 RADAR_SPEED = 200
 
 # Cannon settings
-CANNON_READY = 270
-CANNON_FIRED = 240
+CANNON_READY = 0
+CANNON_SHOT_TURN = 360
 CANNON_SPEED = 1000
 TRIGGER_DISTANCE_MM = 500  # fire at anything closer than 50 cm
 
@@ -41,8 +41,7 @@ async def fire_gun():
         await runloop.sleep_ms(1)
         distance = distance_sensor.distance(DISTANCE_SENSOR)
         if distance != -1 and distance < TRIGGER_DISTANCE_MM:  # -1 means nothing detected
-            await motor.run_to_absolute_position(CANNON_MOTOR, CANNON_FIRED, CANNON_SPEED)
-            return  # no reload mechanism yet, so only one shot
+            await motor.run_for_degrees(CANNON_MOTOR, CANNON_SHOT_TURN, CANNON_SPEED)
 
 
 runloop.run(radar_sweep(), fire_gun())
